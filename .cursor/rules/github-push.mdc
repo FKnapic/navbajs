@@ -1,0 +1,15 @@
+---
+description: Svaku izmjenu u NavBajsu commitaj i pushaj na GitHub
+alwaysApply: true
+---
+
+# Push na GitHub nakon svake izmjene
+
+Korisnik je zatražio da se sve što se mijenja odmah šalje na GitHub.
+
+- Nakon svake završene izmjene koda, podataka ili dokumentacije: `git add -A`, commit i `git push origin main`.
+- Remote je `https://github.com/FKnapic/navbajs.git`, grana `main`.
+- Poruka commita je jedna rečenica na hrvatskom koja kaže što se promijenilo i zašto, npr. `Uveća odabranu stanicu na karti da se vidi koja je kliknuta.`
+- Prije commita provjeri da `npx tsc -p tsconfig.json --noEmit` prolazi.
+- Nikad ne commitaj `.env`, `.dev.vars`, ključeve ni tokene. `.env.example` smije u repo.
+- Push na GitHub nije deploy. Na Vercel (`npx vercel deploy --yes --prod -p navbajs`) šalji samo kad korisnik to traži.
