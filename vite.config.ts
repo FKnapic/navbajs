@@ -74,7 +74,7 @@ export default defineConfig({
       manifest: webManifest,
       workbox: {
         globPatterns: ["**/*.{js,mjs,css,html,svg,png,json,geojson,woff2}"],
-        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         navigateFallback: "/index.html",
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
