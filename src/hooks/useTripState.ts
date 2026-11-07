@@ -405,11 +405,6 @@ export function useTripState() {
     void placeFromMap(kind, lat, lng)
   }
 
-  function longPressDestination(lat: number, lng: number) {
-    setMapPick(null)
-    void placeFromMap("destination", lat, lng)
-  }
-
   function placeFromStation(kind: "origin" | "destination", id: number) {
     const station = stationsApi.stations.find((item) => item.id === id)
     if (!station) return
@@ -530,7 +525,6 @@ export function useTripState() {
     mapPick,
     setMapPick,
     pickOnMap,
-    longPressDestination,
     locating,
     useMyLocation,
     centerOnMe,

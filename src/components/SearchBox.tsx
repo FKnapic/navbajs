@@ -123,7 +123,7 @@ export function SearchBox({ label, placeholder, place, onSelect, onClear, onOpen
           id={`${listId}-list`}
           role="listbox"
           aria-label={label}
-          className="menu-panel absolute z-20 mt-1 max-h-52 w-full scroll-mb-3 overflow-auto rounded-xl border border-line bg-sand py-1 shadow-[0_18px_40px_rgba(28,26,23,.12)]"
+          className="menu-panel absolute z-20 mt-1 max-h-52 w-full scroll-mb-3 overflow-auto rounded-xl border border-line bg-sand py-1 shadow-[var(--shadow-card)]"
         >
           {results.map((result, index) => (
             <li key={`${result.label}-${result.lat}`} role="presentation">

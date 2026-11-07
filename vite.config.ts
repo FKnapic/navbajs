@@ -6,7 +6,7 @@ import tailwindcss from "@tailwindcss/vite"
 import { VitePWA } from "vite-plugin-pwa"
 
 const webManifest = {
-  name: "NavBajs — navigacija biciklom po Zagrebu",
+  name: "NavBajs",
   short_name: "NavBajs",
   description: "Navigacija biciklom po Zagrebu uz Bajs, javna parkirališta i biciklističke staze.",
   lang: "hr",
@@ -14,8 +14,8 @@ const webManifest = {
   start_url: "/",
   scope: "/",
   display: "standalone",
-  background_color: "#f3efe8",
-  theme_color: "#2c4038",
+  background_color: "#F3F5F8",
+  theme_color: "#F3F5F8",
   icons: [
     { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
     { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
@@ -73,6 +73,7 @@ export default defineConfig({
       includeAssets: ["favicon.svg", "icons/*.png"],
       manifest: webManifest,
       workbox: {
+        cacheId: "navbajs-v2",
         globPatterns: ["**/*.{js,mjs,css,html,svg,png,json,geojson,woff2}"],
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         navigateFallback: "/index.html",

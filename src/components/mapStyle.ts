@@ -43,6 +43,10 @@ export function tuneBasemap(map: Map, theme: Theme): void {
     if (!map.getLayer(id)) continue
     map.setLayerZoomRange(id, 13, 24)
     paint(map, id, "text-color", "--map-label")
+    if (map.getLayer(id)) {
+      map.setPaintProperty(id, "text-halo-color", cssColor("--map-label-halo"))
+      map.setPaintProperty(id, "text-halo-width", 1.2)
+    }
     map.setLayoutProperty(id, "text-size", ["interpolate", ["linear"], ["zoom"], 13, 10, 16, 12])
   }
 

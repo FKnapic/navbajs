@@ -88,7 +88,7 @@ function costing(profile: RouteProfile): Record<string, unknown> {
       costing_options: {
         bicycle: {
           bicycle_type: "City",
-          use_roads: 0.1,
+          use_roads: 1,
         },
       },
     }

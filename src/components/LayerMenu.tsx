@@ -65,7 +65,7 @@ export function LayerMenu(props: LayerMenuProps) {
             <input type="checkbox" className="accent-pine" checked={props.showLanes} onChange={(event) => props.onLanes(event.target.checked)} />
             Biciklističke staze
           </label>
-          <p className="mt-2 text-xs leading-relaxed text-muted">Parkirališta i staze pojavljuju se pri bližem prikazu.</p>
+          <p className="mt-2 text-xs leading-relaxed text-muted">Parkirališta se pojavljuju pri bližem prikazu.</p>
           <ul className="mt-3 space-y-1.5 border-t border-line pt-3 text-xs text-muted" aria-label="Boje stanica">
             {SWATCHES.map((item) => (
               <li key={item.label} className="flex items-center gap-2">

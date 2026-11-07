@@ -17,6 +17,8 @@ Javna parkirališta i biciklističke staze skinuti su s data.gov.hr (Grad Zagreb
 Potrebni su Node.js 20+ i npm.
 
 ```bash
+git clone https://github.com/FKnapic/navbajs.git
+cd navbajs
 npm install
 cp .env.example .env
 npm run dev
@@ -56,7 +58,7 @@ Otvori [http://localhost:8787](http://localhost:8787).
 | `PHOTON_URL` / `VITE_PHOTON_URL` | poslužitelj i klijent | Photon (OpenStreetMap). Kućni brojevi idu preko `layer=house`. Javni Nominatim se ne koristi. |
 | `PORT` | `npm start` | port Node poslužitelja |
 
-Biciklistički profil šalje `bicycle_type: "City"` i `use_roads: 0.1`.
+Biciklistički profil šalje `bicycle_type: "City"` i `use_roads: 1`.
 
 ## Deploy
 
@@ -106,7 +108,7 @@ Tijekom navigacije `watchPosition` prati korak, preostalo vrijeme i skretanje s 
 - Javni `valhalla1.openstreetmap.de` je dijeljeni poslužitelj bez jamstva dostupnosti. Tekst skretanja slaže se lokalno iz tipa manevra jer odgovor stiže na engleskom.
 - `free_racks` je često 0 i kad je na stanici više bicikala nego stalaka. Povrat se nudi samo gdje je `free_racks` barem 1.
 - U izbor ulazi pet zračno najbližih kandidata, pa malo dalja stanica može biti brža, a da nije u skupu.
-- Postotak staza mjeri blizinu službenoj crti, ne to da je Valhalla stvarno vozila tom stazom. `use_roads: 0.1` samo naginje profil prema stazama.
+- Postotak staza mjeri blizinu službenoj crti, ne to da je Valhalla stvarno vozila tom stazom. `use_roads: 1` ne kažnjava kolnik. Staza uđe u put samo kad je kraća po vremenu.
 - Gradski skup nema zauzetost parkirališta ni, sam po sebi, nadstrešnicu.
 - Nema glasovne navigacije ni pouzdanog GPS-a dok je zaslon zaključan, posebno na iOS-u.
 - Rutiranje ne radi bez mreže. Service worker čuva ljusku aplikacije, pločice i skinute skupove.

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Info, LocateFixed, Moon, Sun } from "lucide-react"
+import { LogoMark, Wordmark } from "./components/LogoMark"
 import { MapView } from "./components/MapView"
 import { BottomSheet } from "./components/BottomSheet"
 import { LayerMenu } from "./components/LayerMenu"
@@ -54,7 +55,6 @@ export default function App() {
         locateCue={trip.locateCue}
         mapPick={trip.mapPick}
         onPick={trip.pickOnMap}
-        onLongPress={trip.longPressDestination}
         onStationOrigin={(id) => trip.placeFromStation("origin", id)}
         onStationDestination={(id) => trip.placeFromStation("destination", id)}
         onParkingDestination={(id) => {
@@ -101,9 +101,16 @@ export default function App() {
             <Info size={18} strokeWidth={1.75} aria-hidden="true" />
           </button>
           {credit && (
-            <p className="absolute bottom-12 right-0 w-56 rounded-xl border border-line bg-sand p-3 text-xs shadow-[var(--shadow-card)]">
-              © OpenStreetMap, Grad Zagreb (data.gov.hr)
-            </p>
+            <div className="absolute bottom-12 right-0 w-72 rounded-xl border border-line bg-sand p-3 text-xs shadow-[var(--shadow-card)]">
+              <div className="flex items-center gap-3">
+                <LogoMark size={80} />
+                <div className="min-w-0">
+                  <Wordmark />
+                  <p className="mt-2 text-muted">Inačica 1.0.0</p>
+                  <p className="mt-1">© OpenStreetMap, Grad Zagreb (data.gov.hr)</p>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       )}

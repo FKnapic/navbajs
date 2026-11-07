@@ -17,7 +17,8 @@ import { searchPlaces } from "../data/zagrebPlaces"
 import { fold } from "../lib/addressQuery"
 import { readableName } from "../lib/readableName"
 import { ROUTE_UNAVAILABLE, SEARCH_UNAVAILABLE } from "../lib/messages"
-import type { TripController, ModeKey, PlanSlot } from "../hooks/useTripState"
+import type { TripController, PlanSlot } from "../hooks/useTripState"
+import { LogoMark, Wordmark } from "./LogoMark"
 import { haversineM, ZAGREB_CENTER } from "../lib/geo"
 import { nearestStation, walkMinutes } from "../lib/nearestStation"
 import { formatDistance, formatMinutes } from "../lib/format"
@@ -256,6 +257,12 @@ export function BottomSheet({ trip, onFrame }: { trip: TripController; onFrame: 
     window.setTimeout(() => originInputRef.current?.focus(), 0)
   }
 
+  function startMapPick() {
+    trip.setMapPick(focused === "origin" ? "origin" : "destination")
+    setFocused(null)
+    setOriginOpen(false)
+  }
+
   function release(which: "dest" | "origin") {
     window.setTimeout(() => {
       const active = document.activeElement
@@ -344,12 +351,7 @@ export function BottomSheet({ trip, onFrame }: { trip: TripController; onFrame: 
       : failedSlots.length === 3 && failedSlots.every((slot) => slot.message.includes("internetske"))
         ? failedSlots[0].message
         : null
-  const fastest = (["bajs", "own", "walk"] as const).reduce<{ key: ModeKey; time: number } | null>((best, key) => {
-    const slot = trip.slots[key]
-    if (slot.status !== "ready") return best
-    if (!best || slot.plan.totalDurationS < best.time) return { key, time: slot.plan.totalDurationS }
-    return best
-  }, null)
+  const showBrand = !trip.destination && !text.trim() && stage !== "pick"
   const nearest = nearestStation(trip.userFix, trip.stations)
   const shortcuts = [
     trip.book.home ? { kind: "home" as const, label: "Dom", place: trip.book.home } : null,
@@ -409,7 +411,9 @@ export function BottomSheet({ trip, onFrame }: { trip: TripController; onFrame: 
                         : "calc(var(--vvh, 100dvh) - 5.5rem)",
                 maxHeight:
                   snap === "peek"
-                    ? 228
+                    ? showBrand
+                      ? 284
+                      : 228
                     : stage === "result"
                       ? "min(70%, calc(var(--vvh, 100dvh) - 5.5rem))"
                       : "calc(var(--vvh, 100dvh) - 5.5rem)",
@@ -454,44 +458,60 @@ export function BottomSheet({ trip, onFrame }: { trip: TripController; onFrame: 
           <span className="h-1 w-10 rounded-full bg-line" />
         </button>
 
-        <div className="shrink-0 space-y-2.5 px-3.5 pb-3.5 min-[960px]:pt-4">
+        <div className="shrink-0 space-y-3 px-3.5 pb-3.5 min-[960px]:pt-4">
+          {showBrand && (
+            <div className="flex h-8 items-center gap-2.5">
+              <LogoMark size={32} />
+              <Wordmark />
+            </div>
+          )}
           {stage === "result" && trip.destination ? (
             <button type="button" onClick={editDestination} className="search-pill w-full text-left">
               <ArrowLeft size={18} strokeWidth={1.75} aria-hidden="true" />
               <span className="min-w-0 flex-1 truncate">{readableName(trip.destination.label)}</span>
             </button>
           ) : (
-            <div className={cn("search-pill", focused === "dest" && "is-focus")}>
-              <Search size={18} strokeWidth={1.75} aria-hidden="true" />
-              <input
-                role="combobox"
-                aria-expanded={focused === "dest"}
-                aria-controls={listId}
-                aria-autocomplete="list"
-                aria-label="Odredište"
-                placeholder="Kamo idete?"
-                value={text}
-                enterKeyHint="search"
-                autoComplete="off"
-                autoCorrect="off"
-                spellCheck={false}
-                onFocus={() => setFocused("dest")}
-                onBlur={() => release("dest")}
-                onChange={(event) => {
-                  setText(event.target.value)
-                  setFocused("dest")
-                }}
-                onKeyDown={onSearchKey}
-              />
+            <div className="flex items-center gap-2">
+              <div className={cn("search-pill min-w-0 flex-1", focused === "dest" && "is-focus")}>
+                <Search size={18} strokeWidth={1.75} aria-hidden="true" />
+                <input
+                  role="combobox"
+                  aria-expanded={focused === "dest"}
+                  aria-controls={listId}
+                  aria-autocomplete="list"
+                  aria-label="Odredište"
+                  placeholder="Kamo idete?"
+                  value={text}
+                  enterKeyHint="search"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  onFocus={() => setFocused("dest")}
+                  onBlur={() => release("dest")}
+                  onChange={(event) => {
+                    setText(event.target.value)
+                    setFocused("dest")
+                  }}
+                  onKeyDown={onSearchKey}
+                />
+                <button
+                  type="button"
+                  className="search-go"
+                  aria-label="Traži"
+                  disabled={!text.trim()}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={submitSearch}
+                >
+                  <ArrowRight size={16} strokeWidth={1.75} aria-hidden="true" />
+                </button>
+              </div>
               <button
                 type="button"
-                className="search-go"
-                aria-label="Traži"
-                disabled={!text.trim()}
+                className="btn btn-quiet h-12 shrink-0 px-3 text-sm"
                 onMouseDown={(event) => event.preventDefault()}
-                onClick={submitSearch}
+                onClick={startMapPick}
               >
-                <ArrowRight size={16} strokeWidth={1.75} aria-hidden="true" />
+                Klikni na kartu
               </button>
             </div>
           )}
@@ -784,11 +804,7 @@ export function BottomSheet({ trip, onFrame }: { trip: TripController; onFrame: 
                   aria-selected={highlight === mapIndex}
                   className={cn("menu-row", highlight === mapIndex && "is-active")}
                   onMouseDown={(event) => event.preventDefault()}
-                  onClick={() => {
-                    trip.setMapPick(focused === "origin" ? "origin" : "destination")
-                    setFocused(null)
-                    setOriginOpen(false)
-                  }}
+                  onClick={startMapPick}
                 >
                   <MapPin size={16} strokeWidth={1.75} aria-hidden="true" />
                   <span>Odaberi na karti</span>
@@ -817,7 +833,6 @@ export function BottomSheet({ trip, onFrame }: { trip: TripController; onFrame: 
                 icon={<Bike size={16} strokeWidth={1.75} aria-hidden="true" />}
                 slot={trip.slots.bajs}
                 selected={trip.selected === "bajs"}
-                fastest={fastest?.key === "bajs"}
                 note={walkFaster ? "Pješice je brže" : undefined}
                 onSelect={() => trip.selectMode("bajs")}
               />
@@ -826,7 +841,6 @@ export function BottomSheet({ trip, onFrame }: { trip: TripController; onFrame: 
                 icon={<Bike size={16} strokeWidth={1.75} aria-hidden="true" />}
                 slot={trip.slots.own}
                 selected={trip.selected === "own"}
-                fastest={fastest?.key === "own"}
                 extra={trip.slots.own.status === "ready" ? "+ vezanje" : undefined}
                 onSelect={() => trip.selectMode("own")}
               />
@@ -835,7 +849,6 @@ export function BottomSheet({ trip, onFrame }: { trip: TripController; onFrame: 
                 icon={<Footprints size={16} strokeWidth={1.75} aria-hidden="true" />}
                 slot={trip.slots.walk}
                 selected={trip.selected === "walk"}
-                fastest={fastest?.key === "walk"}
                 onSelect={() => trip.selectMode("walk")}
               />
             </div>
@@ -968,7 +981,6 @@ function ModeCard({
   icon,
   slot,
   selected,
-  fastest,
   note,
   extra,
   onSelect,
@@ -977,7 +989,6 @@ function ModeCard({
   icon: ReactNode
   slot: PlanSlot
   selected: boolean
-  fastest: boolean
   note?: string
   extra?: string
   onSelect: () => void
@@ -1006,7 +1017,6 @@ function ModeCard({
         <span className="mt-1 text-xs leading-snug text-muted">{shortReason(slot.message)}</span>
       )}
       {extra && ready && <span className="text-[11px] text-muted">{extra}</span>}
-      {fastest && ready && <span className="text-[10px] uppercase tracking-[0.12em] text-pine">najbrže</span>}
       {note && ready && <span className="text-[11px] text-muted">{note}</span>}
     </button>
   )

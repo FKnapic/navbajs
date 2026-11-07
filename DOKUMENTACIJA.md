@@ -34,8 +34,8 @@ Odredište i polazište mogu se zadati na više načina:
 - **Moja lokacija**
 - nedavna mjesta, **Dom** i **Posao**
 - stanica Bajs s popisa ili s karte
-- **Odaberi na karti**
-- dugi pritisak na kartu, koji postavlja odredište
+- **Odaberi na karti** u popisu prijedloga
+- **Klikni na kartu** desno od pretrage. Karta prima dodir tek nakon te opcije.
 
 **Zamijeni** mijenja polazište i odredište.
 
@@ -45,7 +45,7 @@ Ako točne adrese nema, može se pojaviti najbliži kućni broj u istoj ulici, o
 
 ## Tri načina
 
-Kad postoje polazište i odredište, računaju se sva tri načina odjednom. Na karticama piše **Bajs**, **Svoj bicikl** i **Pješice**. Najbrži dobije oznaku **najbrže**, ali odabir ostaje na onome što korisnik pritisne. Na početku je označen Bajs. Dok se računa, na kartici piše **Računam**. Klik na karticu odmah pokazuje taj način i ne šalje novi zahtjev.
+Kad postoje polazište i odredište, računaju se sva tri načina odjednom. Na karticama piše **Bajs**, **Svoj bicikl** i **Pješice**. Odabir ostaje na onome što korisnik pritisne. Na početku je označen Bajs. Dok se računa, na kartici piše **Računam**. Klik na karticu odmah pokazuje taj način i ne šalje novi zahtjev.
 
 **Kreni** vodi odabranim načinom. Uključen je tek kad je taj način izračunat.
 
@@ -111,7 +111,7 @@ Filtar u gornjem desnom kutu uključuje i gasi slojeve:
 
 | Sloj | Što se vidi |
 | --- | --- |
-| Stanice Bajs | Broj slobodnih bicikala. Zeleno: više od 3. Žuto: 1 do 3. Sivo: nema bicikla. Crveno: održavanje. |
+| Stanice Bajs | Krug u boji ploče, prsten u boji stanja. Plavo: više od 3. Žuto: 1 do 3. Sivo: nema bicikla. Crveno: održavanje. Daleko je samo točkica, bliže se vide i slobodna mjesta. |
 | Parkirališta za bicikle | Javna parkirališta. U detalju: vrsta, broj stalaka, kapacitet, nadstrešnica kad je poznata, godina, gradska četvrt, mjesni odbor. |
 | Biciklističke staze | Službene staze Grada Zagreba. |
 
@@ -125,7 +125,7 @@ Dodir na stanicu otvara broj slobodnih bicikala, slobodnih mjesta i stalaka te n
 - **Adrese** za kućni broj dolaze iz službenog sloja Grada Zagreba. Ostala mjesta dolaze iz lokalnog popisa i OpenStreetMapa.
 - **Parkirališta i staze** su otvoreni podaci Grada Zagreba. Parkirališta dopunjuje OpenStreetMap tamo gdje se točka poklapa s gradskim zapisom. Zauzetost parkirališta se ne zna. Ako ime nije poznato, piše **Parkiralište za bicikle**.
 - **Karta** je OpenStreetMap.
-- **Ruta** se računa na javnim poslužiteljima, biciklističkim i pješačkim profilom. Ako prvi ne odgovori, aplikacija pokušava drugi. Biciklistički profil naginje prema stazama, ali ne jamči da će cijela vožnja ići baš službenom stazom.
+- **Ruta** se računa na javnim poslužiteljima, biciklističkim i pješačkim profilom. Ako prvi ne odgovori, aplikacija pokušava drugi. Biciklistički profil bira bržu vožnju. Kolnik nema kaznu. Staza uđe u put samo kad je kraća po vremenu.
 
 Bez interneta karta iz predmemorije može ostati vidljiva. Stanice uživo i novi račun rute trebaju mrežu.
 

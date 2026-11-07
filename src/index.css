@@ -3,78 +3,104 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --accent: #0f6e5a;
-  --accent-soft: #e3f1ec;
+  --page: #f3f5f8;
+  --accent: #1d6fd8;
+  --accent-hover: #185cb5;
+  --accent-soft: #e6f0fc;
   --on-accent: #ffffff;
+  --logo-ink: #ffffff;
   --surface: #ffffff;
-  --surface-muted: #f5f4f0;
-  --text: #1b1f1d;
-  --text-secondary: #5b635f;
-  --text-placeholder: #6a726e;
-  --border: rgba(0, 0, 0, 0.08);
-  --st-many: #1f9d6e;
-  --st-few: #e8a317;
-  --st-none: #9aa19d;
-  --st-maint: #d64545;
+  --surface-muted: #f3f5f8;
+  --text: #14213a;
+  --text-secondary: #5b6b82;
+  --text-placeholder: #8a97ab;
+  --border: #dde3ec;
+  --st-many: #1d6fd8;
+  --st-few: #d9962b;
+  --st-none: #9aa3ad;
+  --st-maint: #d2645a;
+  --error: #8c2f27;
+  --error-bg: #fbe9e7;
   --on-danger: #ffffff;
-  --me: #2563eb;
+  --me: #1d6fd8;
+  --me-halo: rgba(29, 111, 216, 0.25);
   --marker-ring: #ffffff;
-  --cluster-ring: rgba(0, 0, 0, 0.06);
-  --dim: rgba(27, 31, 29, 0.35);
-  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.1);
-  --warn: #6d4b28;
-  --warn-bg: #f4efe6;
-  --route-walk: #3d6b8c;
-  --route-ride: #0f6e5a;
-  --route-dest: #b07a32;
-  --map-bg: #f3f4f1;
-  --map-water: #c9d5dc;
-  --map-park: #e4ebe3;
-  --map-wood: #dce5d8;
-  --map-residential: #eeede8;
-  --map-road: #e4e2db;
-  --map-road-major: #f7f6f3;
-  --map-road-casing: #d9d6ce;
-  --map-building: #e4e2dc;
-  --map-label: #8a918c;
+  --marker-edge: rgba(0, 0, 0, 0.08);
+  --marker-shadow: rgba(20, 33, 58, 0.16);
+  --on-marker-b: #ffffff;
+  --cluster-ring: rgba(20, 33, 58, 0.06);
+  --dim: rgba(20, 33, 58, 0.35);
+  --shadow-card: 0 4px 16px rgba(20, 33, 58, 0.1);
+  --warn: #7a4f0c;
+  --warn-bg: #fdf3e1;
+  --route-walk: #1d6fd8;
+  --route-ride: #1d6fd8;
+  --route-dest: #1d6fd8;
+  --route-casing: #ffffff;
+  --lane: #7fa6d6;
+  --lane-opacity: 0.6;
+  --map-bg: #f3f5f8;
+  --map-water: #d6e4f2;
+  --map-park: #e6ede9;
+  --map-wood: #e6ede9;
+  --map-residential: #e8ecf1;
+  --map-road: #e4e8ee;
+  --map-road-major: #ffffff;
+  --map-road-casing: #d5dbe5;
+  --map-building: #e8ecf1;
+  --map-label: #5b6b82;
+  --map-label-halo: #f3f5f8;
 }
 
 html.dark {
   color-scheme: dark;
-  --accent: #3db596;
-  --accent-soft: #1c3330;
-  --on-accent: #10241e;
-  --surface: #1f2321;
-  --surface-muted: #2a2f2c;
-  --text: #f3f6f4;
-  --text-secondary: #c9d1cc;
-  --text-placeholder: #a7b0ab;
-  --border: rgba(255, 255, 255, 0.1);
-  --st-many: #3dca8e;
-  --st-few: #f0c14b;
-  --st-none: #8e9692;
-  --st-maint: #f07171;
-  --on-danger: #1b1f1d;
-  --me: #60a5fa;
-  --marker-ring: #ffffff;
-  --cluster-ring: rgba(255, 255, 255, 0.08);
+  --page: #0f1623;
+  --accent: #5aa2f2;
+  --accent-hover: #7db7f6;
+  --accent-soft: #17294a;
+  --on-accent: #0b1730;
+  --logo-ink: #0f1623;
+  --surface: #162033;
+  --surface-muted: #1b2740;
+  --text: #e7ecf4;
+  --text-secondary: #93a0b5;
+  --text-placeholder: #66748c;
+  --border: #263349;
+  --st-many: #5aa2f2;
+  --st-few: #d8b26a;
+  --st-none: #6f7b8c;
+  --st-maint: #c77c72;
+  --error: #e3a59d;
+  --error-bg: #2e1a19;
+  --on-danger: #0f1623;
+  --me: #5aa2f2;
+  --me-halo: rgba(90, 162, 242, 0.3);
+  --marker-ring: #0f1623;
+  --marker-edge: transparent;
+  --marker-shadow: rgba(0, 0, 0, 0.45);
+  --on-marker-b: #0f1623;
+  --cluster-ring: rgba(231, 236, 244, 0.08);
   --dim: rgba(0, 0, 0, 0.45);
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --warn: #e7c59a;
-  --warn-bg: #2c2418;
-  --route-walk: #a9c4dc;
-  --route-ride: #3db596;
-  --route-dest: #e2b57a;
-  --map-bg: #2a2e2c;
-  --map-water: #3a4650;
-  --map-park: #313833;
-  --map-wood: #2e3632;
-  --map-residential: #323633;
-  --map-road: #3e4642;
-  --map-road-major: #4e5853;
-  --map-road-casing: #3a423e;
-  --map-building: #3a403c;
-  --map-label: #b7c0bb;
+  --warn: #e3c98a;
+  --warn-bg: #2a2314;
+  --route-walk: #5aa2f2;
+  --route-ride: #5aa2f2;
+  --route-dest: #5aa2f2;
+  --route-casing: #0f1623;
+  --lane: #2f5e97;
+  --lane-opacity: 0.7;
+  --map-bg: #0f1623;
+  --map-water: #0b1220;
+  --map-park: #131d2b;
+  --map-wood: #131d2b;
+  --map-residential: #141c2c;
+  --map-road: #1a2335;
+  --map-road-major: #222d44;
+  --map-road-casing: #141c2c;
+  --map-building: #141c2c;
+  --map-label: #93a0b5;
+  --map-label-halo: #0f1623;
 }
 
 @theme {
@@ -86,7 +112,8 @@ html.dark {
   --color-muted: var(--text-secondary);
   --color-pine: var(--accent);
   --color-line: var(--border);
-  --color-danger: var(--st-maint);
+  --color-danger: var(--error);
+  --color-danger-bg: var(--error-bg);
   --color-wash: var(--accent-soft);
   --color-warn: var(--warn);
   --color-warn-bg: var(--warn-bg);
@@ -232,6 +259,10 @@ button {
   color: var(--on-accent);
 }
 
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
 .btn-quiet {
   border: 1px solid var(--color-line);
   background: transparent;
@@ -239,8 +270,8 @@ button {
 }
 
 .btn-danger {
-  background: var(--st-maint);
-  color: var(--on-danger);
+  background: var(--error-bg);
+  color: var(--error);
 }
 
 .btn:disabled {
@@ -281,7 +312,7 @@ button {
 }
 
 .panel {
-  background: color-mix(in srgb, var(--color-sand) 96%, transparent);
+  background: var(--surface);
   color: var(--color-ink);
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(16px);
@@ -381,7 +412,7 @@ button {
   border: 3px solid var(--marker-ring);
   border-radius: 999px;
   background: var(--me);
-  box-shadow: 0 0 0 10px color-mix(in srgb, var(--me) 28%, transparent);
+  box-shadow: 0 0 0 10px var(--me-halo);
 }
 
 .user-dot::after {
@@ -417,7 +448,7 @@ button {
   padding: 12px 14px;
   background: var(--color-sand);
   color: var(--color-ink);
-  box-shadow: 0 16px 40px rgba(28, 26, 23, 0.16);
+  box-shadow: var(--shadow-card);
 }
 
 .bikebr-popup .maplibregl-popup-close-button {
@@ -484,7 +515,7 @@ button {
 
 @keyframes pulse-loc {
   0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--me) 40%, transparent);
+    box-shadow: 0 0 0 0 var(--me-halo);
   }
   100% {
     box-shadow: 0 0 0 16px transparent;
@@ -545,6 +576,10 @@ button {
   border-radius: 999px;
   background: var(--accent);
   color: var(--on-accent);
+}
+
+.search-go:hover:not(:disabled) {
+  background: var(--accent-hover);
 }
 
 .search-go:disabled {

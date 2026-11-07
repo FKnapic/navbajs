@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import type { FeatureCollection } from "geojson"
-import { GeoJSONSource, LngLatBounds, Map, MapTouchEvent, Marker, Popup, ScaleControl, type MapMouseEvent, type PaddingOptions } from "maplibre-gl"
+import { GeoJSONSource, LngLatBounds, Map, Marker, Popup, ScaleControl, type MapMouseEvent, type PaddingOptions } from "maplibre-gl"
 import type { Theme } from "../hooks/useTheme"
 import { cssColor } from "../lib/palette"
 import type { Place } from "../types/places"
@@ -36,7 +36,6 @@ interface MapViewProps {
   locateCue: { lat: number; lng: number; token: number } | null
   mapPick: "origin" | "destination" | null
   onPick: (lat: number, lng: number) => void
-  onLongPress: (lat: number, lng: number) => void
   onStationOrigin: (id: number) => void
   onStationDestination: (id: number) => void
   onParkingDestination: (id: string) => void
@@ -93,58 +92,6 @@ export function MapView(props: MapViewProps) {
       },
     })
     map.addControl(new ScaleControl({ maxWidth: 110, unit: "metric" }), "bottom-right")
-    let suppressClick = false
-    let hold = 0
-    const cancelHold = () => {
-      window.clearTimeout(hold)
-      hold = 0
-    }
-    const armHold = (lat: number, lng: number) => {
-      cancelHold()
-      hold = window.setTimeout(() => {
-        suppressClick = true
-        propsRef.current.onLongPress(lat, lng)
-      }, 550)
-    }
-    const track = (start: { x: number; y: number }, kind: "mouse" | "touch") => {
-      if (kind === "mouse") {
-        const move = (next: MapMouseEvent) => {
-          if (Math.hypot(next.point.x - start.x, next.point.y - start.y) > 8) cancelHold()
-        }
-        const end = () => {
-          cancelHold()
-          map.off("mousemove", move)
-          map.off("mouseup", end)
-        }
-        map.on("mousemove", move)
-        map.on("mouseup", end)
-        return
-      }
-      const move = (next: MapTouchEvent) => {
-        if (Math.hypot(next.point.x - start.x, next.point.y - start.y) > 8) cancelHold()
-      }
-      const end = () => {
-        cancelHold()
-        map.off("touchmove", move)
-        map.off("touchend", end)
-      }
-      map.on("touchmove", move)
-      map.on("touchend", end)
-    }
-    map.on("mousedown", (event) => {
-      if (event.originalEvent.button !== 0) return
-      armHold(event.lngLat.lat, event.lngLat.lng)
-      track(event.point, "mouse")
-    })
-    map.on("contextmenu", (event) => {
-      event.originalEvent.preventDefault()
-      propsRef.current.onLongPress(event.lngLat.lat, event.lngLat.lng)
-    })
-    map.on("touchstart", (event) => {
-      if (event.originalEvent.touches.length !== 1) return
-      armHold(event.lngLat.lat, event.lngLat.lng)
-      track(event.point, "touch")
-    })
     map.on("load", () => {
       tuneBasemap(map, propsRef.current.theme)
       ensureLayers(map)
@@ -152,11 +99,8 @@ export function MapView(props: MapViewProps) {
     })
     map.on("click", (event: MapMouseEvent) => {
       const current = propsRef.current
-      if (suppressClick) {
-        suppressClick = false
-        return
-      }
       const clusterLayers = ["clusters", "cluster-count"].filter((id) => map.getLayer(id))
+      const stationLayers = ["station-mark-focus", "station-mark", "stations"].filter((id) => map.getLayer(id))
       const clusterHit = clusterLayers.length
         ? map.queryRenderedFeatures(event.point, { layers: clusterLayers })[0]
         : undefined
@@ -180,13 +124,13 @@ export function MapView(props: MapViewProps) {
         current.onPick(event.lngLat.lat, event.lngLat.lng)
         return
       }
-      const layers = ["stations", "parking"].filter(
+      const layers = [...stationLayers, "parking"].filter(
         (id) => map.getLayer(id) && map.getLayoutProperty(id, "visibility") !== "none",
       )
       const feature = layers.length
         ? map.queryRenderedFeatures(event.point, { layers })[0]
         : undefined
-      if (feature?.layer?.id === "stations") {
+      if (feature?.layer?.id === "stations" || feature?.layer?.id === "station-mark" || feature?.layer?.id === "station-mark-focus") {
         const id = Number(feature.properties?.id)
         const station = current.stations.find((item) => item.id === id)
         if (!station) return
@@ -210,7 +154,7 @@ export function MapView(props: MapViewProps) {
     const syncCursor = (over: boolean) => {
       map.getCanvas().style.cursor = propsRef.current.mapPick ? "crosshair" : over ? "pointer" : ""
     }
-    for (const id of ["clusters", "cluster-count", "stations", "parking"]) {
+    for (const id of ["clusters", "cluster-count", "stations", "station-mark", "station-mark-focus", "parking"]) {
       map.on("mouseenter", id, () => syncCursor(true))
       map.on("mouseleave", id, () => syncCursor(false))
     }
@@ -277,7 +221,7 @@ export function MapView(props: MapViewProps) {
     const map = mapRef.current
     if (!map) return
     syncMarker(map, originMarker, props.origin, "A", cssColor("--accent"), cssColor("--on-accent"))
-    syncMarker(map, destMarker, props.destination, "B", cssColor("--text"), cssColor("--surface"))
+    syncMarker(map, destMarker, props.destination, "B", cssColor("--text"), cssColor("--on-marker-b"))
   }, [props.origin, props.destination, props.theme])
 
   useEffect(() => {
@@ -377,7 +321,7 @@ function paint(map: Map, props: MapViewProps): void {
   const zoom = map.getZoom()
   setGeoOnce(map, "stations", props.stationGeo)
   if (zoom >= 15.5) setGeoOnce(map, "parking", props.parkingGeo)
-  if (zoom >= 13.5) setGeoOnce(map, "lanes", props.lanes ?? EMPTY)
+  setGeoOnce(map, "lanes", props.lanes ?? EMPTY)
   const routeKey = props.segments
   let bag = sent.get(map)
   if (!bag) {
@@ -396,8 +340,12 @@ function paint(map: Map, props: MapViewProps): void {
     })
   }
   setVisible(map, "stations", props.showStations)
+  setVisible(map, "station-mark", props.showStations)
+  setVisible(map, "station-mark-focus", props.showStations)
+  setVisible(map, "station-pulse", props.showStations)
+  setVisible(map, "station-picked", props.showStations)
   setVisible(map, "station-count", props.showStations)
-  setVisible(map, "station-tool", props.showStations)
+  setVisible(map, "station-detail", props.showStations)
   setVisible(map, "clusters", props.showStations)
   setVisible(map, "cluster-count", props.showStations)
   setVisible(map, "cluster-ring", props.showStations)

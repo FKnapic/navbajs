@@ -10,9 +10,11 @@ export function useTheme() {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark")
     localStorage.setItem("bikebr-theme", theme)
-    const token = theme === "dark" ? "--surface" : "--accent"
+    const token = "--map-bg"
     const color = getComputedStyle(document.documentElement).getPropertyValue(token).trim()
-    if (color) document.querySelector('meta[name="theme-color"]')?.setAttribute("content", color)
+    if (color) {
+      document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => meta.setAttribute("content", color))
+    }
   }, [theme])
 
   return {
