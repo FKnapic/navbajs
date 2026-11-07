@@ -1,0 +1,46 @@
+{
+  "name": "bikebr",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c green,blue \"tsx server/node.ts\" \"vite\"",
+    "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "start": "NODE_ENV=production tsx server/node.ts",
+    "fetch-data": "node scripts/fetch-data.mjs",
+    "icons": "python3 scripts/make-icons.py",
+    "smoke": "tsx scripts/smoke.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:e2e": "playwright test",
+    "test:geocode": "tsx scripts/geocode-coverage.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.6",
+    "@turf/along": "^7.4.0",
+    "@turf/helpers": "^7.4.0",
+    "@turf/length": "^7.4.0",
+    "@turf/nearest-point-on-line": "^7.4.0",
+    "hono": "^4.13.16",
+    "lucide-react": "^1.69.0",
+    "maplibre-gl": "^6.16.0",
+    "proj4": "^2.22.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@tailwindcss/vite": "^4.3.4",
+    "@types/geojson": "^7946.0.16",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.5",
+    "tailwindcss": "^4.3.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^6.4.5",
+    "vite-plugin-pwa": "^1.3.0"
+  }
+}

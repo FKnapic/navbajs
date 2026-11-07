@@ -1,0 +1,50 @@
+{
+  "fetchedAt": "2026-11-05T18:34:23.263Z",
+  "license": "Gradski skupovi: Otvorena dozvola, data.gov.hr. OpenStreetMap: ODbL © OpenStreetMap contributors.",
+  "parking": {
+    "dataset": "geoportal-javna-parkiralista-za-bicikle",
+    "organization": "Grad Zagreb",
+    "url": "https://data.gov.hr/ckan/dataset/geoportal-javna-parkiralista-za-bicikle",
+    "count": 318,
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+    "fields": [
+      "OBJECTID",
+      "vrsta",
+      "naziv",
+      "lokacija",
+      "broj_stalaka",
+      "broj_bicikala",
+      "godina_postavljanja",
+      "MJESNI_ODBOR",
+      "GRADSKA_CETVRT"
+    ]
+  },
+  "lanes": {
+    "dataset": "geoportal-biciklisticke-staze",
+    "organization": "Grad Zagreb",
+    "url": "https://data.gov.hr/ckan/dataset/geoportal-biciklisticke-staze",
+    "note": "CKAN GeoJSON download trenutačno vraća grešku, pa se skup čita iz ArcGIS FeatureServera navedenog u tom zapisu (outSR=4326).",
+    "count": 2923,
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+    "fields": [
+      "OBJECTID",
+      "kategorija_id",
+      "lokacija",
+      "zavrsni_sloj",
+      "duljina",
+      "MJESNI_ODBOR",
+      "GRADSKA_CETVRT"
+    ]
+  },
+  "osm": {
+    "query": "amenity=bicycle_parking",
+    "bbox": [
+      15.75,
+      45.7,
+      16.3,
+      45.92
+    ],
+    "count": 1246,
+    "license": "ODbL"
+  }
+}
